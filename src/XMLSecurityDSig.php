@@ -1059,9 +1059,12 @@ class XMLSecurityDSig
                         if (is_array($certData['issuer'])) {
                             $parts = array();
                             foreach ($certData['issuer'] AS $key => $value) {
+                                if ($key == 'emailAddress') {
+                                    $key = strtoupper($key);
+                                }
                                 array_unshift($parts, "$key=$value");
                             }
-                            $issuerName = implode(',', $parts);
+                            $issuerName = implode(', ', $parts);
                         } else {
                             $issuerName = $certData['issuer'];
                         }
@@ -1077,7 +1080,8 @@ class XMLSecurityDSig
                 }
 
             }
-            $x509CertNode = $baseDoc->createElementNS(self::XMLDSIGNS, $dsig_pfx.'X509Certificate', $X509Cert);
+            // $x509CertNode = $baseDoc->createElementNS(self::XMLDSIGNS, $dsig_pfx.'X509Certificate', $X509Cert);
+            $x509CertNode = $baseDoc->createElementNS(self::XMLDSIGNS, $dsig_pfx.'X509Certificate', '');
             $x509DataNode->appendChild($x509CertNode);
         }
     }
